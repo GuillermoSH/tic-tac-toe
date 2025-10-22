@@ -29,7 +29,7 @@ export default function Index() {
           {winner ? (
             <Ionicons name="trophy-outline" size={26} className="!text-green-600" />
           ) : (
-            <Ionicons name="person-circle-outline" size={26} className="!text-blue-600" />
+            <Ionicons name="person-circle-outline" size={26} className="!text-blue-600 dark:!text-amber-600" />
           )}
           <Text
             className={`text-2xl font-semibold ${

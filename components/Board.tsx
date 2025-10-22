@@ -50,14 +50,14 @@ function Square({ value, onPress, isWinner = false }: SquareProps) {
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: glow.value }],
-    shadowOpacity: isWinner ? 0.4 : 0,
     shadowColor: isWinner ? "#60a5fa" : "transparent",
+    shadowOpacity: isWinner ? 0.4 : 0,
     shadowRadius: isWinner ? 10 : 0,
   }));
 
   return (
     <Animated.View
-      style={[{ width: "33.33%", aspectRatio: 1, padding: 4 }, animatedStyle]}
+      style={[animatedStyle, { width: "33.33%", aspectRatio: 1, padding: 4 }]}
     >
       <BoardBtn value={value ?? undefined} onPress={onPress} disabled={!!value} />
     </Animated.View>

@@ -15,8 +15,6 @@ export const BoardBtn: React.FC<Props> = ({ value, onPress, disabled }) => {
         ? "ellipse-outline"
         : undefined;
 
-  const iconColor = value === "X" ? "#2563eb" : "#dc2626";
-
   return (
     <TouchableOpacity
       onPress={onPress}

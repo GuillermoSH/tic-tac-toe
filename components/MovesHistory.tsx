@@ -48,11 +48,19 @@ export function MovesHistory({
                 onPress={() => onJump(move)}
               >
                 <View className="flex-row items-center gap-2">
-                  <Ionicons
-                    name={iconName}
-                    size={20}
-                    className={isActive ? "!text-white" : "!text-blue-600 dark:!text-indigo-600"}
-                  />
+                  {iconName === "close-outline" ? (
+                    <Ionicons
+                      name={iconName}
+                      size={20}
+                      className={isActive ? "!text-white" : "!text-blue-600 dark:!text-indigo-600"}
+                    />
+                  ): (
+                    <Ionicons
+                      name={iconName}
+                      size={20}
+                      className={isActive ? "!text-white" : "!text-amber-600 dark:!text-amber-600"}
+                    />
+                  )}
                   <Text
                     className={`text-base ${
                       isActive ? "text-white font-bold" : "text-gray-800 dark:!text-white"
