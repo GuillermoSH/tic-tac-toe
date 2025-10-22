@@ -1,30 +1,65 @@
-import { Row } from "@/components/Row";
+import { useEffect } from "react";
 import { View } from "react-native";
+import Animated, {
+    useAnimatedStyle,
+    useSharedValue,
+    withRepeat,
+    withTiming,
+} from "react-native-reanimated";
 import { BoardBtn } from "./BoardBtn";
 
-type Props = {
-    squares: Array<string>;
-    onPress: (input: number) => void;
+type BoardProps = {
+  squares: (string | null)[];
+  onPress: (index: number) => void;
+  winningLine?: number[] | null;
 };
 
-export const Board: React.FC<Props> = ({squares, onPress}) => {
-    return (
-        <View className="flex flex-col w-screen px-14">
-            <Row>
-                <BoardBtn value={squares[0]} onPress={() => onPress(0)}></BoardBtn>
-                <BoardBtn value={squares[1]} onPress={() => onPress(1)}></BoardBtn>
-                <BoardBtn value={squares[2]} onPress={() => onPress(2)}></BoardBtn>
-            </Row>
-            <Row>
-                <BoardBtn value={squares[3]} onPress={() => onPress(3)}></BoardBtn>
-                <BoardBtn value={squares[4]} onPress={() => onPress(4)}></BoardBtn>
-                <BoardBtn value={squares[5]} onPress={() => onPress(5)}></BoardBtn>
-            </Row>
-            <Row>
-                <BoardBtn value={squares[6]} onPress={() => onPress(6)}></BoardBtn>
-                <BoardBtn value={squares[7]} onPress={() => onPress(7)}></BoardBtn>
-                <BoardBtn value={squares[8]} onPress={() => onPress(8)}></BoardBtn>
-            </Row>
-        </View>
-    );
+export function Board({ squares, onPress, winningLine }: BoardProps) {
+  return (
+    <View className="w-full items-center">
+      <View className="flex flex-row flex-wrap w-full max-w-[288px] justify-center">
+        {squares.map((value, i) => (
+          <Square
+            key={i}
+            value={value}
+            onPress={() => onPress(i)}
+            isWinner={winningLine?.includes(i)}
+          />
+        ))}
+      </View>
+    </View>
+  );
+}
+
+type SquareProps = {
+  value: string | null;
+  onPress: () => void;
+  isWinner?: boolean;
+};
+
+function Square({ value, onPress, isWinner = false }: SquareProps) {
+  const glow = useSharedValue(1);
+
+  useEffect(() => {
+    if (isWinner) {
+      glow.value = withRepeat(withTiming(1.08, { duration: 1200 }), -1, true);
+    } else {
+      glow.value = withTiming(1, { duration: 300 });
+    }
+  }, [isWinner]);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: glow.value }],
+    shadowOpacity: isWinner ? 0.4 : 0,
+    shadowColor: isWinner ? "#60a5fa" : "transparent",
+    shadowRadius: isWinner ? 10 : 0,
+  }));
+
+  return (
+    <Animated.View
+      style={[{ width: "33.33%", aspectRatio: 1, padding: 4 }, animatedStyle]}
+    >
+      <BoardBtn value={value ?? undefined} onPress={onPress} disabled={!!value} />
+    </Animated.View>
+  );
 }
