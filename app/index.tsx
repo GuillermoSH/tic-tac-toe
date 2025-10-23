@@ -1,5 +1,7 @@
 import { Board } from "@/components/Board";
 import { MovesHistory } from "@/components/MovesHistory";
+import { TopBar } from "@/components/TopBar";
+import { useTheme } from "@/contexts/ThemeContext";
 import { useTicTacToe } from "@/hooks/useTicTacToe";
 import { Ionicons } from "@expo/vector-icons";
 import { Text, TouchableOpacity, View } from "react-native";
@@ -14,34 +16,47 @@ export default function Index() {
     winningLine,
     history,
     currentMove,
+    isDraw,
     handleClick,
     jumpTo,
     resetGame,
   } = useTicTacToe();
+  const { themeType } = useTheme();
+  const isDark = themeType === "dark";
 
   return (
-    <View className="flex-1 bg-gray-100 dark:bg-black text-black dark:text-white items-center py-16 px-6">
+    <View
+      className={`flex-1 items-center py-16 px-6 ${
+        isDark ? "bg-neutral-950 text-neutral-100" : "bg-gray-50 text-gray-800"
+      }`}
+    >
+      <TopBar />
 
-      {/* Game Area (status + board + history) */}
-      <View className="items-center gap-5">
+      <View className="items-center gap-6">
         {/* Status */}
         <View className="flex-row items-center gap-2">
           {winner ? (
-            <Ionicons name="trophy-outline" size={26} className="!text-green-600" />
+            <Ionicons name="trophy-outline" size={28} className={isDark ? "!text-cyan-400" : "!text-green-600"} />
           ) : (
-            <Ionicons name="person-circle-outline" size={26} className="!text-blue-600 dark:!text-amber-600" />
+            <Ionicons
+              name="person-circle-outline"
+              size={28}
+              color={isDark ? "#f59e0b" : "#2563eb"}
+            />
           )}
           <Text
-            className={`text-2xl font-semibold ${
-              winner ? "text-green-600" : "text-gray-800 dark:text-white"
+            className={`text-3xl font-bold ${
+              winner
+                ? isDark ? "text-cyan-400" : "text-green-600"
+                : isDark ? "text-white" : "text-gray-800"
             }`}
           >
             {status}
           </Text>
         </View>
 
-        {/* Game Board (slightly larger, same width as history) */}
-        <View className="w-[288px]"> 
+        {/* Game Board */}
+        <View className="w-[288px]">
           <Board
             squares={currentSquares}
             onPress={handleClick}
@@ -50,7 +65,11 @@ export default function Index() {
         </View>
 
         {/* Moves History */}
-        <View className="w-[288px] bg-white dark:bg-neutral-700 rounded-2xl shadow-lg p-4">
+        <View
+          className={`w-[288px] rounded-2xl shadow-xl p-4 ${
+            isDark ? "bg-neutral-800" : "bg-white"
+          }`}
+        >
           <MovesHistory
             historyLength={history.length}
             currentMove={currentMove}
@@ -59,18 +78,22 @@ export default function Index() {
         </View>
       </View>
 
-      {/* Reset Button (fixed bottom area, no layout shift) */}
-      <View className="mt-4">
-        {winner && (
+      {/* Reset Button */}
+      {(winner || isDraw) && (
+        <View className="mt-5">
           <TouchableOpacity
-            className="py-3 px-8 bg-blue-600 dark:bg-indigo-600 rounded-xl shadow-md flex-row items-center gap-2 active:scale-95 transition"
+            className={`py-3 px-8 rounded-xl shadow-md flex-row items-center gap-2 border-2 active:scale-95 active:opacity-90 transition ${
+              isDark
+                ? "bg-indigo-500 border-indigo-400"
+                : "bg-blue-500 border-blue-400"
+            }`}
             onPress={resetGame}
           >
             <Ionicons name="refresh-outline" size={20} color="#fff" />
             <Text className="text-white text-lg font-bold">Reiniciar</Text>
           </TouchableOpacity>
-        )}
-      </View>
+        </View>
+      )}
     </View>
   );
 }

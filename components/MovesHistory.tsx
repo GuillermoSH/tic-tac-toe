@@ -1,3 +1,4 @@
+import { useTheme } from "@/contexts/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useRef } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
@@ -15,6 +16,8 @@ export function MovesHistory({
 }: MovesHistoryProps) {
   const scrollViewRef = useRef<React.ElementRef<typeof ScrollView>>(null);
   const moves = Array.from({ length: historyLength - 1 }, (_, i) => i + 1);
+  const { themeType } = useTheme();
+  const isDark = themeType === "dark";
 
   useEffect(() => {
     scrollViewRef.current?.scrollToEnd({ animated: true });
@@ -22,7 +25,11 @@ export function MovesHistory({
 
   return (
     <View className="flex flex-col">
-      <Text className="text-lg font-semibold mb-3 text-center text-gray-700 dark:text-white">
+      <Text
+        className={`text-lg font-semibold mb-3 text-center ${
+          isDark ? "text-neutral-100" : "text-gray-700"
+        }`}
+      >
         Historial de jugadas
       </Text>
 
@@ -35,45 +42,52 @@ export function MovesHistory({
         <View className="flex flex-col gap-2">
           {moves.map((move) => {
             const player = move % 2 === 1 ? "X" : "O";
-            const iconName = player === "X" ? "close-outline" : "ellipse-outline";
+            const iconName =
+              player === "X" ? "close-outline" : "ellipse-outline";
             const isActive = move === currentMove;
+
+            const bgColor = isActive
+              ? isDark
+                ? "bg-indigo-600 border-indigo-700"
+                : "bg-blue-600 border-blue-700"
+              : isDark
+              ? "bg-neutral-900 border-neutral-700"
+              : "bg-neutral-100 border-neutral-300";
+
+            const textColor = isActive
+              ? "text-white font-bold"
+              : isDark
+              ? "text-neutral-100"
+              : "text-gray-800";
+
+            const subTextColor = isActive
+              ? "text-white/80"
+              : isDark
+              ? "text-neutral-400"
+              : "text-gray-500";
+
+            const iconColor = isActive
+              ? "#fff"
+              : player === "X"
+              ? isDark
+                ? "#818cf8"
+                : "#2563eb"
+              : "#f59e0b";
+
             return (
               <TouchableOpacity
                 key={move}
-                className={`flex-row items-center justify-between py-2 px-4 rounded-xl border ${
-                  isActive
-                    ? "bg-blue-600 border-blue-700 dark:bg-indigo-600 dark:border-indigo-700"
-                    : "bg-neutral-100 dark:bg-neutral-900 border-neutral-300 dark:border-neutral-600"
-                }`}
+                className={`flex-row items-center justify-between py-2 px-4 rounded-xl border ${bgColor}`}
                 onPress={() => onJump(move)}
               >
                 <View className="flex-row items-center gap-2">
-                  {iconName === "close-outline" ? (
-                    <Ionicons
-                      name={iconName}
-                      size={20}
-                      className={isActive ? "!text-white" : "!text-blue-600 dark:!text-indigo-600"}
-                    />
-                  ): (
-                    <Ionicons
-                      name={iconName}
-                      size={20}
-                      className={isActive ? "!text-white" : "!text-amber-600 dark:!text-amber-600"}
-                    />
-                  )}
-                  <Text
-                    className={`text-base ${
-                      isActive ? "text-white font-bold" : "text-gray-800 dark:!text-white"
-                    }`}
-                  >
+                  <Ionicons name={iconName} size={18} color={iconColor} />
+                  <Text className={`text-sm ${textColor}`}>
                     Jugada #{move}
                   </Text>
                 </View>
-                <Text
-                  className={`text-sm ${
-                    isActive ? "text-white/80" : "text-gray-500 dark:text-neutral-400"
-                  }`}
-                >
+
+                <Text className={`text-sm ${subTextColor}`}>
                   {player} movió
                 </Text>
               </TouchableOpacity>

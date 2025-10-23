@@ -11,8 +11,10 @@ export function useTicTacToe() {
   const winner = winnerInfo?.winner;
   const winningLine = winnerInfo?.line;
 
+  const isDraw = !winner && currentSquares.every((sq) => sq !== null);
+
   function handleClick(i: number) {
-    if (currentSquares[i] || winner) return;
+    if (currentSquares[i] || winner || isDraw) return;
 
     const nextSquares = currentSquares.slice();
     nextSquares[i] = xIsNext ? "X" : "O";
@@ -33,6 +35,8 @@ export function useTicTacToe() {
 
   const status = winner
     ? `Ganador: ${winner}`
+    : isDraw
+    ? "Empate 🤝"
     : `Siguiente jugador: ${xIsNext ? "X" : "O"}`;
 
   return {
@@ -42,6 +46,7 @@ export function useTicTacToe() {
     xIsNext,
     winner,
     winningLine,
+    isDraw,
     status,
     handleClick,
     jumpTo,
