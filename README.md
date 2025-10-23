@@ -1,50 +1,61 @@
-# Welcome to your Expo app 👋
+# 🎮 Tic Tac Toe - Tres en Raya
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+¡Bienvenido a **Tic Tac Toe**!
+Disfruta del clásico juego de Tres en Raya con un toque moderno: **cambia de tema** y **revive tus jugadas** para volver atrás y revisar cada movimiento.
 
-## Get started
+---
 
-1. Install dependencies
+## ✨ Características
 
-   ```bash
-   npm install
-   ```
+* 🟢 **Juego clásico**: Tic Tac Toe para 2 jugadores.
+* 🎨 **Cambio de temas**: personaliza la apariencia del tablero.
+* 🔄 **Historial de jugadas**: revisa y vuelve a cualquier movimiento.
+* 📱 **Responsive**: optimizado para móviles y tablets.
 
-2. Start the app
+---
 
-   ```bash
-   npx expo start
-   ```
+## 🚀 Comenzando
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+### 1. Instalar dependencias
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 2. Iniciar la app
 
-## Learn more
+```bash
+npx expo start
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+Luego podrás abrirla en:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+* 📱 **Expo Go**
+* 🤖 **Emulador Android**
+* 🍏 **Simulador iOS**
 
-## Join the community
+---
 
-Join our community of developers creating universal apps.
+## 🗂 Estructura del proyecto
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+* **app/**: código principal de la aplicación (file-based routing).
+* **components/**: tablero, casillas, botones y otros componentes reutilizables.
+* **contexts/**: contexto de temas.
+* **assets/**: imágenes y recursos del juego.
+* **libs/**: lógica del juego.
+
+---
+
+## 🎮 Cómo jugar
+
+1. Selecciona un tema en la configuración.
+2. Comienza una partida de 2 jugadores.
+3. Cada movimiento se guarda en el **historial de jugadas**.
+4. Usa el historial para **volver atrás** o revisar movimientos anteriores.
+
+---
+
+## 🔥 Tips
+
+* Combina estrategia y anticipación para ganar.
+* Revive tus jugadas y aprende de tus errores para mejorar tu estrategia.
