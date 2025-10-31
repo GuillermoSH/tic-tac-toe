@@ -1,55 +1,99 @@
 import { useTheme } from "@/contexts/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
-import React, { useRef } from "react";
-import {
-  Animated,
-  Easing,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { useState } from "react";
+import { Modal, Pressable, Text, TouchableOpacity, View } from "react-native";
 
-export const TopBar = () => {
-  const { toggleTheme, themeType } = useTheme();
+type TopBarProps = {
+  winner: string | null;
+  isDraw: boolean;
+  currentPlayer: "X" | "O";
+};
 
-  const rotation = useRef(new Animated.Value(0)).current;
+export function TopBar({ winner, isDraw, currentPlayer }: TopBarProps) {
+  const { themeType, toggleTheme } = useTheme();
+  const isDark = themeType === "dark";
+  const [menuVisible, setMenuVisible] = useState(false);
 
+  // 🔹 Determinar icono y texto del estado
+  let iconName: keyof typeof Ionicons.glyphMap = "person-circle-outline";
+  let iconColor = currentPlayer === "X" ? isDark ? "#7c86ff" : "#155dfc" : isDark ? "#fd9a00" : "#fb2c36";
+  let text = `Juega ${currentPlayer}`;
+  let textColor = isDark ? "text-white" : "text-gray-800";
 
-  const animateIcon = () => {
-    Animated.timing(rotation, {
-      toValue: 1,
-      duration: 700,
-      easing: Easing.out(Easing.cubic),
-      useNativeDriver: true,
-    }).start(() => {
-      rotation.setValue(0);
-    });
-  };
-
-  const handleToggleTheme = () => {
-    animateIcon();
-    setTimeout(toggleTheme, 50);
-  };
-
-  const rotateInterpolate = rotation.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["0deg", "360deg"],
-  });
+  if (winner) {
+    iconName = "trophy-outline";
+    iconColor = isDark ? "#22d3ee" : "#16a34a";
+    text = `Ganador: ${winner}`;
+    textColor = isDark ? "text-cyan-400" : "text-green-600";
+  } else if (isDraw) {
+    iconName = "extension-puzzle";
+    iconColor = isDark ? "#fd9a00" : "#eab308";
+    text = "Empate";
+    textColor = isDark ? "text-amber-500" : "text-yellow-600";
+  }
 
   return (
-    <View className="mb-4 mt-2">
-        <TouchableOpacity onPress={handleToggleTheme} activeOpacity={0.7}>
-          <Animated.View
-            style={{
-              transform: [{ rotate: rotateInterpolate }],
-            }}
+    <View className="w-full flex-row justify-between items-center px-4 py-3">
+      {/* Izquierda vacía (para balance visual) */}
+      <View className="w-6" />
+
+      {/* Centro — Estado del juego */}
+      <View className="flex-row items-center gap-2">
+        <Ionicons name={iconName} size={26} color={iconColor} />
+        <Text className={`text-xl font-bold ${textColor}`}>{text}</Text>
+      </View>
+
+      {/* Derecha — Menú de opciones */}
+      <TouchableOpacity onPress={() => setMenuVisible(true)}>
+        <Ionicons
+          name="ellipsis-vertical"
+          size={24}
+          color={isDark ? "#e5e5e5" : "#1f2937"}
+        />
+      </TouchableOpacity>
+
+      {/* Modal del menú */}
+      <Modal
+        transparent
+        animationType="fade"
+        visible={menuVisible}
+        onRequestClose={() => setMenuVisible(false)}
+      >
+        <Pressable
+          className="flex-1 bg-black/40"
+          onPress={() => setMenuVisible(false)}
+        >
+          <View
+            className={`absolute top-14 right-4 rounded-xl shadow-lg border ${
+              isDark
+                ? "bg-neutral-900 border-neutral-700"
+                : "bg-white border-gray-300"
+            }`}
           >
-            <Ionicons
-              name={themeType === "dark" ? "sunny" : "moon"}
-              size={28}
-              className={themeType === "dark" ? "!text-white" : "!text-black"}
-            />
-          </Animated.View>
-        </TouchableOpacity>
+            {/* Cambiar tema */}
+            <TouchableOpacity
+              onPress={() => {
+                toggleTheme();
+                setMenuVisible(false);
+              }}
+              className="px-5 py-3 flex-row items-center gap-3"
+            >
+              <Ionicons
+                name={isDark ? "sunny-outline" : "moon-outline"}
+                size={20}
+                color={isDark ? "#fcd34d" : "#1f2937"}
+              />
+              <Text
+                className={`text-base ${
+                  isDark ? "text-neutral-100" : "text-gray-800"
+                }`}
+              >
+                Cambiar tema
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </Pressable>
+      </Modal>
     </View>
   );
-};
+}

@@ -7,6 +7,7 @@ type Props = {
   onPress: () => void;
   disabled?: boolean;
   isWinner?: boolean;
+  iconSize?: number;
 };
 
 export const BoardBtn: React.FC<Props> = ({
@@ -14,6 +15,7 @@ export const BoardBtn: React.FC<Props> = ({
   onPress,
   disabled,
   isWinner,
+  iconSize,
 }) => {
   const { themeType } = useTheme();
   const isDark = themeType === "dark";
@@ -28,11 +30,11 @@ export const BoardBtn: React.FC<Props> = ({
   const iconColor =
     iconName === "close-outline"
       ? isDark
-        ? "!text-indigo-400" // Indigo 400
-        : "!text-blue-600" // Blue 600
+        ? "!text-indigo-400"
+        : "!text-blue-600"
       : isDark
-      ? "!text-amber-500" // Amber 500
-      : "!text-red-600"; // Red 600
+      ? "!text-amber-500"
+      : "!text-red-600";
   
   const ringBgColor = isDark ? "!border-cyan-400 !bg-cyan-400/20" : "!border-green-600 !bg-green-600/10";
 
@@ -46,7 +48,7 @@ export const BoardBtn: React.FC<Props> = ({
         ${isWinner ? ringBgColor : ""}
       `}
     >
-      {iconName && <Ionicons name={iconName} size={44} className={iconColor} />}
+      {iconName && <Ionicons name={iconName} size={iconSize} className={iconColor} />}
     </TouchableOpacity>
   );
 };
