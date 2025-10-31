@@ -14,7 +14,6 @@ import "../global.css";
 export default function Index() {
   const {
     boardSize,
-    status,
     winner,
     winningLine,
     history,
@@ -35,18 +34,17 @@ export default function Index() {
 
   return (
     <SafeAreaView
-      className={`flex-1 items-center ${
-        isDark
-          ? "bg-neutral-950 text-neutral-100"
-          : "bg-neutral-100 text-gray-800"
-      }`}
+      className={`flex-1 items-center ${isDark
+        ? "bg-neutral-900 text-neutral-100"
+        : "bg-neutral-100 text-gray-800"
+        }`}
     >
       <TopBar winner={winner} isDraw={isDraw} currentPlayer={currentPlayer} />
 
-      <View className="flex-1 items-center py-6 px-6 w-full">
-        <View className="items-center gap-6 w-full max-w-[400px] flex-1">
+      <View className="py-6 px-6 w-full">
+        <View className="items-center gap-6 w-full">
           {/* Board */}
-          <View className="w-full flex-1 justify-center">
+          <View className="w-full">
             <Board
               squares={currentSquares}
               onPress={handleClick}
@@ -56,11 +54,10 @@ export default function Index() {
 
           {/* History */}
           <View
-            className={`w-full rounded-2xl p-2 border-2 ${
-              isDark
-                ? "bg-neutral-800 border-neutral-700"
-                : "bg-white border-gray-200"
-            }`}
+            className={`w-full rounded-2xl p-2 border-2 ${isDark
+              ? "bg-neutral-800 border-neutral-700"
+              : "bg-white border-gray-200"
+              }`}
           >
             <MovesHistory
               historyLength={history.length}
@@ -73,7 +70,17 @@ export default function Index() {
           </View>
         </View>
 
-        {/* End game panel */}
+        {/* Mid game pannel */}
+        {(!winner && !isDraw) && (
+          <View className="mt-6 items-center mb-4">
+            <TouchableOpacity className={`py-3 px-6 flex-1 justify-center rounded-xl shadow-md flex-row items-center gap-2 border-2 active:scale-95 active:opacity-90 transition ${isDark ? "bg-cyan-700 border-cyan-400" : "bg-green-600 border-green-500"}`} onPress={() => resetGame()}>
+              <Ionicons name="flag" size={20} color="#fff" />
+              <Text className="text-white text-lg font-bold">Rendirse</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {/* End game pannel */}
         {(winner || isDraw) && (
           <View className="mt-6 items-center mb-4">
             {showSizeSelector ? (
@@ -87,17 +94,15 @@ export default function Index() {
                 />
 
                 <TouchableOpacity
-                  className={`mt-4 py-2 px-6 rounded-xl border-2 active:scale-95 active:opacity-90 ${
-                    isDark
-                      ? "border-neutral-700 bg-neutral-800"
-                      : "border-gray-300 bg-white"
-                  }`}
+                  className={`mt-4 py-2 px-6 rounded-xl border-2 active:scale-95 active:opacity-90 ${isDark
+                    ? "border-neutral-700 bg-neutral-800"
+                    : "border-gray-300 bg-white"
+                    }`}
                   onPress={() => setShowSizeSelector(false)}
                 >
                   <Text
-                    className={`text-base font-medium ${
-                      isDark ? "text-neutral-100" : "text-gray-800"
-                    }`}
+                    className={`text-base font-medium ${isDark ? "text-neutral-100" : "text-gray-800"
+                      }`}
                   >
                     Cancelar
                   </Text>
@@ -107,11 +112,10 @@ export default function Index() {
               <View className="flex-row gap-3">
                 {/* Botón Cambiar tamaño */}
                 <TouchableOpacity
-                  className={`py-3 px-6 rounded-xl shadow-md flex-row items-center gap-2 border-2 active:scale-95 active:opacity-90 transition ${
-                    isDark
-                      ? "bg-cyan-700 border-cyan-400"
-                      : "bg-green-600 border-green-500"
-                  }`}
+                  className={`py-3 px-6 flex-1 justify-center rounded-xl shadow-md flex-row items-center gap-2 border-2 active:scale-95 active:opacity-90 transition ${isDark
+                    ? "bg-cyan-700 border-cyan-400"
+                    : "bg-green-600 border-green-500"
+                    }`}
                   onPress={() => setShowSizeSelector(true)}
                 >
                   <Ionicons name="grid-outline" size={20} color="#fff" />
@@ -120,11 +124,10 @@ export default function Index() {
 
                 {/* Botón Reiniciar */}
                 <TouchableOpacity
-                  className={`py-3 px-6 rounded-xl shadow-md flex-row items-center gap-2 border-2 active:scale-95 active:opacity-90 transition ${
-                    isDark
-                      ? "bg-indigo-500 border-indigo-400"
-                      : "bg-blue-600 border-blue-500"
-                  }`}
+                  className={`py-3 px-6 flex-1 justify-center rounded-xl shadow-md flex-row items-center gap-2 border-2 active:scale-95 active:opacity-90 transition ${isDark
+                    ? "bg-indigo-500 border-indigo-400"
+                    : "bg-blue-600 border-blue-500"
+                    }`}
                   onPress={() => resetGame()}
                 >
                   <Ionicons name="refresh-outline" size={20} color="#fff" />

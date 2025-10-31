@@ -33,14 +33,14 @@ export function TopBar({ winner, isDraw, currentPlayer }: TopBarProps) {
   }
 
   return (
-    <View className="w-full flex-row justify-between items-center px-4 py-3">
-      {/* Izquierda vacía (para balance visual) */}
+    <View className={`w-full border-b-2 ${isDark ? "border-neutral-700" : "border-neutral-200"} flex-row justify-between items-center px-4 py-3`}>
+      {/* Izquierda vacía */}
       <View className="w-6" />
 
       {/* Centro — Estado del juego */}
       <View className="flex-row items-center gap-2">
         <Ionicons name={iconName} size={26} color={iconColor} />
-        <Text className={`text-xl font-bold ${textColor}`}>{text}</Text>
+        <Text className={`text-2xl font-bold ${textColor}`}>{text}</Text>
       </View>
 
       {/* Derecha — Menú de opciones */}
@@ -64,7 +64,7 @@ export function TopBar({ winner, isDraw, currentPlayer }: TopBarProps) {
           onPress={() => setMenuVisible(false)}
         >
           <View
-            className={`absolute top-14 right-4 rounded-xl shadow-lg border ${
+            className={`absolute top-12 right-4 rounded-xl shadow-lg border ${
               isDark
                 ? "bg-neutral-900 border-neutral-700"
                 : "bg-white border-gray-300"
@@ -79,16 +79,27 @@ export function TopBar({ winner, isDraw, currentPlayer }: TopBarProps) {
               className="px-5 py-3 flex-row items-center gap-3"
             >
               <Ionicons
-                name={isDark ? "sunny-outline" : "moon-outline"}
+                name={isDark ? "sunny" : "moon"}
                 size={20}
                 color={isDark ? "#fcd34d" : "#1f2937"}
               />
               <Text
-                className={`text-base ${
+                className={`text-xl ${
                   isDark ? "text-neutral-100" : "text-gray-800"
                 }`}
               >
                 Cambiar tema
+              </Text>
+            </TouchableOpacity>
+            {/* Ver estadisticas */}
+            <TouchableOpacity onPress={() => {setMenuVisible(false)}} className="px-5 py-3 flex-row items-center gap-3">
+              <Ionicons name="stats-chart" size={20} color={isDark ? "#fff" : "000"} />
+              <Text
+                className={`text-xl ${
+                  isDark ? "text-neutral-100" : "text-gray-800"
+                }`}
+              >
+                Ver stats
               </Text>
             </TouchableOpacity>
           </View>

@@ -41,7 +41,7 @@ export function MovesHistory({
 
       <ScrollView
         ref={scrollViewRef}
-        style={{ height: 120 }}
+        className="h-[120px]"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 8 }}
       >

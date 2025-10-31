@@ -5,5 +5,5 @@ type Props = {
 };
 
 export const Row: React.FC<Props> = ({ children }) => {
-  return <View className="flex flex-row">{children}</View>;
+  return <View className="flex gap-2 flex-row">{children}</View>;
 };

@@ -11,13 +11,13 @@ export function BoardSizeSelector({ currentSize, onSelect }: BoardSizeSelectorPr
   const isDark = themeType === "dark";
 
   return (
-    <View className="items-center mt-6">
+    <View className="items-center ">
       <Text
         className={`text-lg font-semibold mb-3 ${
           isDark ? "text-neutral-100" : "text-gray-800"
         }`}
       >
-        Nueva partida — elige tamaño
+        Elige el tamaño
       </Text>
 
       <View className="flex-row gap-3 flex-wrap justify-center">

@@ -14,14 +14,14 @@ export function Board({ squares, onPress, winningLine }: BoardProps) {
   // 🔹 Escala de tamaño de ícono según tamaño del tablero
   const iconSize =
     size === 3
-      ? 60
+      ? 75
       : size === 4
-      ? 45
+      ? 55
       : size === 5
-      ? 40
+      ? 50
       : size === 6
-      ? 37
-      : 35; // para 7 o más
+      ? 40
+      : 37; // para 7 o más
 
   // 🔹 Crear filas del tablero
   const rows = [];
@@ -30,10 +30,7 @@ export function Board({ squares, onPress, winningLine }: BoardProps) {
   }
 
   return (
-    <View
-      className="items-center w-full"
-      style={{ maxWidth: 400 }}
-    >
+    <View className="w-full flex gap-2">
       {rows.map((row, rowIndex) => (
         <Row key={rowIndex}>
           {row.map((value, colIndex) => {
@@ -41,7 +38,7 @@ export function Board({ squares, onPress, winningLine }: BoardProps) {
             const isWinner = winningLine?.includes(index);
 
             return (
-              <View key={index} className="flex-1 aspect-square p-1">
+              <View key={index} className="flex-1 aspect-square">
                 <BoardBtn
                   value={value ?? undefined}
                   onPress={() => onPress(index)}

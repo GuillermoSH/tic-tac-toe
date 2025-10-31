@@ -18,7 +18,7 @@ export function useTicTacToe(initialSize: number = 3) {
   const xIsNext = currentMove % 2 === 0;
   const currentPlayer: "X" | "O" = xIsNext ? "X" : "O";
 
-  // 🔹 Si el juego ya terminó, mantenemos el resultado final
+  // Si el juego ya terminó, mantenemos el resultado final
   const { winner, winningLine, isDraw } = gameOver
     ? calculateWinner(history[finalMove!], boardSize)
     : calculateWinner(currentSquares, boardSize);
@@ -59,20 +59,8 @@ export function useTicTacToe(initialSize: number = 3) {
     setFinalResult(null);
   }
 
-  // 🟢 Status siempre refleja empate, ganador o turno actual
-  const status = finalResult
-    ? finalResult.isDraw
-      ? "Empate"
-      : `Ganador: ${finalResult.winner}`
-    : winner
-    ? `Ganador: ${winner}`
-    : isDraw
-    ? "Empate"
-    : `Turno de ${currentPlayer}`;
-
   return {
     boardSize,
-    status,
     winner: finalResult ? finalResult.winner : winner,
     winningLine,
     history,
