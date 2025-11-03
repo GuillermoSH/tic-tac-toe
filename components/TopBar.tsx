@@ -1,3 +1,4 @@
+import { StatsPanel } from "@/components/StatsPanel";
 import { useTheme } from "@/contexts/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
@@ -13,33 +14,42 @@ export function TopBar({ winner, isDraw, currentPlayer }: TopBarProps) {
   const { themeType, toggleTheme } = useTheme();
   const isDark = themeType === "dark";
   const [menuVisible, setMenuVisible] = useState(false);
+  const [statsVisible, setStatsVisible] = useState(false);
 
-  // 🔹 Determinar icono y texto del estado
   let iconName: keyof typeof Ionicons.glyphMap = "person-circle-outline";
-  let iconColor = currentPlayer === "X" ? isDark ? "#7c86ff" : "#155dfc" : isDark ? "#fd9a00" : "#fb2c36";
+  let iconColor =
+    currentPlayer === "X"
+      ? isDark
+        ? "!text-indigo-500"
+        : "!text-blue-500"
+      : isDark
+        ? "!text-amber-500"
+        : "!text-amber-500";
   let text = `Juega ${currentPlayer}`;
   let textColor = isDark ? "text-white" : "text-gray-800";
 
   if (winner) {
     iconName = "trophy-outline";
-    iconColor = isDark ? "#22d3ee" : "#16a34a";
+    iconColor = isDark ? "!text-cyan-400" : "!text-emerald-400";
     text = `Ganador: ${winner}`;
-    textColor = isDark ? "text-cyan-400" : "text-green-600";
+    textColor = isDark ? "text-cyan-400" : "text-emerald-400";
   } else if (isDraw) {
     iconName = "extension-puzzle";
-    iconColor = isDark ? "#fd9a00" : "#eab308";
+    iconColor = isDark ? "!text-amber-400" : "!text-yellow-600";
     text = "Empate";
-    textColor = isDark ? "text-amber-500" : "text-yellow-600";
+    textColor = isDark ? "!text-amber-400" : "!text-yellow-600";
   }
 
   return (
-    <View className={`w-full border-b-2 ${isDark ? "border-neutral-700" : "border-neutral-200"} flex-row justify-between items-center px-4 py-3`}>
+    <View
+      className={`w-full border-b-2 ${isDark ? "border-neutral-700" : "border-neutral-200"} flex-row justify-between items-center px-4 py-3`}
+    >
       {/* Izquierda vacía */}
       <View className="w-6" />
 
       {/* Centro — Estado del juego */}
       <View className="flex-row items-center gap-2">
-        <Ionicons name={iconName} size={26} color={iconColor} />
+        <Ionicons name={iconName} size={26} className={iconColor} />
         <Text className={`text-2xl font-bold ${textColor}`}>{text}</Text>
       </View>
 
@@ -81,7 +91,7 @@ export function TopBar({ winner, isDraw, currentPlayer }: TopBarProps) {
               <Ionicons
                 name={isDark ? "sunny" : "moon"}
                 size={20}
-                color={isDark ? "#fcd34d" : "#1f2937"}
+                className={isDark ? "!text-amber-400" : "!text-cyan-800"}
               />
               <Text
                 className={`text-xl ${
@@ -92,8 +102,18 @@ export function TopBar({ winner, isDraw, currentPlayer }: TopBarProps) {
               </Text>
             </TouchableOpacity>
             {/* Ver estadisticas */}
-            <TouchableOpacity onPress={() => {setMenuVisible(false)}} className="px-5 py-3 flex-row items-center gap-3">
-              <Ionicons name="stats-chart" size={20} color={isDark ? "#fff" : "000"} />
+            <TouchableOpacity
+              onPress={() => {
+                setMenuVisible(false);
+                setStatsVisible(true);
+              }}
+              className="px-5 py-3 flex-row items-center gap-3"
+            >
+              <Ionicons
+                name="stats-chart"
+                size={20}
+                color={isDark ? "#fff" : "000"}
+              />
               <Text
                 className={`text-xl ${
                   isDark ? "text-neutral-100" : "text-gray-800"
@@ -102,6 +122,21 @@ export function TopBar({ winner, isDraw, currentPlayer }: TopBarProps) {
                 Ver stats
               </Text>
             </TouchableOpacity>
+          </View>
+        </Pressable>
+      </Modal>
+      <Modal
+        transparent
+        animationType="slide"
+        visible={statsVisible}
+        onRequestClose={() => setStatsVisible(false)}
+      >
+        <Pressable
+          className="flex-1 bg-black/40 items-center justify-center"
+          onPress={() => setStatsVisible(false)}
+        >
+          <View className="w-[85%]">
+            <StatsPanel />
           </View>
         </Pressable>
       </Modal>

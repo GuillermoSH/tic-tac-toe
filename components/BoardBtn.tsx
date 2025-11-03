@@ -31,12 +31,12 @@ export const BoardBtn: React.FC<Props> = ({
     iconName === "close-outline"
       ? isDark
         ? "!text-indigo-400"
-        : "!text-blue-600"
+        : "!text-blue-500"
       : isDark
       ? "!text-amber-500"
-      : "!text-red-600";
+      : "!text-amber-500";
   
-  const ringBgColor = isDark ? "!border-cyan-400 !bg-cyan-400/20" : "!border-green-600 !bg-green-600/10";
+  const ringBgColor = isDark ? "!border-cyan-400 !bg-cyan-400/20" : "!border-emerald-500 !bg-emerald-500/10";
 
   return (
     <TouchableOpacity

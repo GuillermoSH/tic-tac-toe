@@ -1,30 +1,60 @@
 import calculateWinner from "@/lib/calculateWinner";
-import { useState } from "react";
+import type { GameResult } from "@/lib/gameStorage";
+import { useEffect, useState } from "react";
+import uuid from "react-native-uuid";
 
-export function useTicTacToe(initialSize: number = 3) {
+type UseTicTacToeOptions = {
+  onGameEnd?: (result: GameResult) => void;
+};
+
+export function useTicTacToe(initialSize: number = 3, options?: UseTicTacToeOptions) {
   const [boardSize, setBoardSize] = useState(initialSize);
-  const [history, setHistory] = useState([
-    Array(initialSize * initialSize).fill(null),
-  ]);
+  const [history, setHistory] = useState([Array(initialSize * initialSize).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [finalMove, setFinalMove] = useState<number | null>(null);
-  const [finalResult, setFinalResult] = useState<{
-    winner: "X" | "O" | null;
-    isDraw: boolean;
-  } | null>(null);
+  const [finalResult, setFinalResult] = useState<{ winner: "X" | "O" | null; isDraw: boolean } | null>(null);
+  const [startingPlayer, setStartingPlayer] = useState<"X" | "O">("X");
+  const [showStartModal, setShowStartModal] = useState(true);
 
   const currentSquares = history[currentMove];
-  const xIsNext = currentMove % 2 === 0;
-  const currentPlayer: "X" | "O" = xIsNext ? "X" : "O";
+  const currentPlayer: "X" | "O" = (currentMove % 2 === 0 ? startingPlayer : startingPlayer === "X" ? "O" : "X");
+  const canPlay = !gameOver && !showStartModal;
+  const safeSquares = currentSquares ?? Array(boardSize * boardSize).fill(null);
+  const { winner, winningLine, isDraw } = calculateWinner(safeSquares, boardSize);
 
-  // Si el juego ya terminó, mantenemos el resultado final
-  const { winner, winningLine, isDraw } = gameOver
-    ? calculateWinner(history[finalMove!], boardSize)
-    : calculateWinner(currentSquares, boardSize);
+  useEffect(() => {
+    startNewGame();
+  }, [boardSize]);
+
+  function startNewGame() {
+    const random = Math.random() < 0.5 ? "X" : "O";
+    setStartingPlayer(random);
+    setShowStartModal(true);
+
+    const timer = setTimeout(() => setShowStartModal(false), 1500);
+    return () => clearTimeout(timer);
+  }
+
+  function registerResult(
+    winner: "X" | "O" | null,
+    isDraw: boolean,
+    surrendered?: boolean
+  ) {
+    const result: GameResult = {
+      id: uuid.v4() as string,
+      date: new Date().toISOString(),
+      boardSize,
+      winner,
+      isDraw,
+      moves: currentMove,
+      surrendered,
+    };
+    options?.onGameEnd?.(result);
+  }
 
   function handleClick(index: number) {
-    if (gameOver || currentSquares[index]) return;
+    if (!canPlay || currentSquares[index]) return;
 
     const nextSquares = currentSquares.slice();
     nextSquares[index] = currentPlayer;
@@ -42,7 +72,17 @@ export function useTicTacToe(initialSize: number = 3) {
         winner: result.winner,
         isDraw: result.isDraw,
       });
+
+      registerResult(result.winner, result.isDraw);
     }
+  }
+
+  function surrender() {
+    if (gameOver) return;
+    const opponent = currentPlayer === "X" ? "O" : "X";
+    setGameOver(true);
+    setFinalResult({ winner: opponent, isDraw: false });
+    registerResult(opponent, false, true);
   }
 
   function jumpTo(move: number) {
@@ -57,6 +97,7 @@ export function useTicTacToe(initialSize: number = 3) {
     setGameOver(false);
     setFinalMove(null);
     setFinalResult(null);
+    startNewGame();
   }
 
   return {
@@ -65,13 +106,16 @@ export function useTicTacToe(initialSize: number = 3) {
     winningLine,
     history,
     isDraw: finalResult ? finalResult.isDraw : isDraw,
-    currentSquares,
+    currentSquares: safeSquares,
     currentMove,
     currentPlayer,
+    startingPlayer,
+    showStartModal,
     gameOver,
     finalMove,
     handleClick,
     jumpTo,
     resetGame,
+    surrender,
   };
 }

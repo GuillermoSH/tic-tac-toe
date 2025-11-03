@@ -1,8 +1,10 @@
 import { Board } from "@/components/Board";
 import { BoardSizeSelector } from "@/components/BoardSizeSelector";
 import { MovesHistory } from "@/components/MovesHistory";
+import { StartModal } from "@/components/StartModal";
 import { TopBar } from "@/components/TopBar";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useGameStats } from "@/hooks/useGameStats";
 import { useTicTacToe } from "@/hooks/useTicTacToe";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
@@ -12,6 +14,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import "../global.css";
 
 export default function Index() {
+  const { addGame } = useGameStats();
+
   const {
     boardSize,
     winner,
@@ -23,10 +27,13 @@ export default function Index() {
     currentPlayer,
     gameOver,
     finalMove,
+    startingPlayer,
+    showStartModal,
     handleClick,
     jumpTo,
     resetGame,
-  } = useTicTacToe();
+    surrender,
+  } = useTicTacToe(3, { onGameEnd: addGame });
 
   const { themeType } = useTheme();
   const isDark = themeType === "dark";
@@ -39,6 +46,7 @@ export default function Index() {
         : "bg-neutral-100 text-gray-800"
         }`}
     >
+      <StartModal startingPlayer={startingPlayer} visible={showStartModal} />
       <TopBar winner={winner} isDraw={isDraw} currentPlayer={currentPlayer} />
 
       <View className="py-6 px-6 w-full">
@@ -71,9 +79,13 @@ export default function Index() {
         </View>
 
         {/* Mid game pannel */}
-        {(!winner && !isDraw) && (
-          <View className="mt-6 items-center mb-4">
-            <TouchableOpacity className={`py-3 px-6 flex-1 justify-center rounded-xl shadow-md flex-row items-center gap-2 border-2 active:scale-95 active:opacity-90 transition ${isDark ? "bg-cyan-700 border-cyan-400" : "bg-green-600 border-green-500"}`} onPress={() => resetGame()}>
+        {((!winner && !isDraw) && history.length > 1) && (
+          <View className="mt-6 h-16 mb-4">
+            <TouchableOpacity
+              className={`py-3 px-6 h-max flex-1 justify-center rounded-xl shadow-md flex-row items-center gap-2 border-2 active:scale-95 active:opacity-90 transition 
+                ${currentPlayer == "X" ? isDark ? "bg-indigo-400 border-indigo-200" : "bg-blue-500 border-blue-300" : isDark ? "bg-amber-500 border-amber-300" : "bg-amber-500 border-amber-300"}`}
+              onPress={surrender}
+            >
               <Ionicons name="flag" size={20} color="#fff" />
               <Text className="text-white text-lg font-bold">Rendirse</Text>
             </TouchableOpacity>
@@ -114,7 +126,7 @@ export default function Index() {
                 <TouchableOpacity
                   className={`py-3 px-6 flex-1 justify-center rounded-xl shadow-md flex-row items-center gap-2 border-2 active:scale-95 active:opacity-90 transition ${isDark
                     ? "bg-cyan-700 border-cyan-400"
-                    : "bg-green-600 border-green-500"
+                    : "bg-emerald-500 border-emerald-400"
                     }`}
                   onPress={() => setShowSizeSelector(true)}
                 >
@@ -126,7 +138,7 @@ export default function Index() {
                 <TouchableOpacity
                   className={`py-3 px-6 flex-1 justify-center rounded-xl shadow-md flex-row items-center gap-2 border-2 active:scale-95 active:opacity-90 transition ${isDark
                     ? "bg-indigo-500 border-indigo-400"
-                    : "bg-blue-600 border-blue-500"
+                    : "bg-blue-500 border-blue-400"
                     }`}
                   onPress={() => resetGame()}
                 >

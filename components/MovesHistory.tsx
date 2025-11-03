@@ -55,8 +55,8 @@ export function MovesHistory({
 
             const bgColor = isActive
               ? isDark
-                ? "bg-indigo-500 border-indigo-700"
-                : "bg-blue-600 border-blue-700"
+                ? "bg-indigo-500 border-indigo-400"
+                : "bg-blue-500 border-blue-400"
               : isDark
                 ? "bg-neutral-900 border-neutral-700"
                 : "bg-neutral-100 border-neutral-300";
@@ -74,14 +74,14 @@ export function MovesHistory({
                 : "text-gray-500";
 
             const iconColor = isActive
-              ? "#fff"
+              ? "!text-white"
               : player === "X"
                 ? isDark
-                  ? "#818cf8"
-                  : "#2563eb"
+                  ? "!text-indigo-500"
+                  : "!text-blue-500"
                 : isDark
-                  ? "#f59e0b"
-                  : "#fb2c36";
+                  ? "!text-amber-500"
+                  : "!text-amber-500";
 
             const finalIcon =
               isFinal && gameOver ? (
@@ -89,18 +89,20 @@ export function MovesHistory({
                   <Ionicons
                     name="extension-puzzle"
                     size={18}
-                    color={isDark ? "#fbbf24" : "#eab308"}
+                    className={isDark ? "!text-amber-200": "!text-yellow-200"}
                   />
                 ) : (
                   <Ionicons
                     name="trophy"
                     size={18}
-                    color={isDark ? "#22d3ee" : "#d6ae47"}
+                    className={isDark ? "!text-cyan-400": "!text-emerald-400"}
                   />
                 )
               ) : (
-                <Ionicons name={iconName} size={18} color={iconColor} />
+                <Ionicons name={iconName} size={18} className={iconColor} />
               );
+
+            const moveText = isFinal && gameOver ? isDraw ? "Jugada para empate" : "Jugada ganadora" : `Jugada #${move}`;
 
             return (
               <TouchableOpacity
@@ -110,7 +112,7 @@ export function MovesHistory({
               >
                 <View className="flex-row items-center gap-2">
                   {finalIcon}
-                  <Text className={`text-sm ${textColor}`}>Jugada #{move}</Text>
+                  <Text className={`text-sm ${textColor}`}>{moveText}</Text>
                 </View>
 
                 <View className="flex-row items-center gap-1">

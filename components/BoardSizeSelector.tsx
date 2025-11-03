@@ -28,8 +28,8 @@ export function BoardSizeSelector({ currentSize, onSelect }: BoardSizeSelectorPr
             className={`py-2 px-4 rounded-lg border-2 ${
               currentSize === size
                 ? isDark
-                  ? "bg-indigo-600 border-indigo-500"
-                  : "bg-blue-600 border-blue-500"
+                  ? "bg-indigo-500 border-indigo-400"
+                  : "bg-blue-500 border-blue-400"
                 : isDark
                 ? "bg-neutral-800 border-neutral-700"
                 : "bg-white border-gray-300"
