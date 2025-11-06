@@ -1,14 +1,17 @@
 import calculateWinner from "@/lib/calculateWinner";
 import type { GameResult } from "@/lib/gameStorage";
+import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import uuid from "react-native-uuid";
 
 type UseTicTacToeOptions = {
   onGameEnd?: (result: GameResult) => void;
+  selectedGameType?: string;
 };
 
 export function useTicTacToe(initialSize: number = 3, options?: UseTicTacToeOptions) {
   const [boardSize, setBoardSize] = useState(initialSize);
+  const [gameType, setGameType] = useState("local");
   const [history, setHistory] = useState([Array(initialSize * initialSize).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
   const [gameOver, setGameOver] = useState(false);
@@ -24,13 +27,33 @@ export function useTicTacToe(initialSize: number = 3, options?: UseTicTacToeOpti
   const { winner, winningLine, isDraw } = calculateWinner(safeSquares, boardSize);
 
   useEffect(() => {
-    startNewGame();
+    console.log(options?.selectedGameType);
+    if (options?.selectedGameType) setGameType(options?.selectedGameType);
+    console.log(gameType);
+    startNewGame(gameType);
   }, [boardSize]);
 
-  function startNewGame() {
+  const saveDeviceToApi = () => {
+    return fetch('http://localhost:5000/devices', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        alias: Math.random()
+      })
+    })
+  }
+
+  function startNewGame(gameType: string) {
     const random = Math.random() < 0.5 ? "X" : "O";
     setStartingPlayer(random);
     setShowStartModal(true);
+
+    if (gameType == "online") {
+      saveDeviceToApi;
+    }
 
     const timer = setTimeout(() => setShowStartModal(false), 1500);
     return () => clearTimeout(timer);
@@ -83,6 +106,7 @@ export function useTicTacToe(initialSize: number = 3, options?: UseTicTacToeOpti
     setGameOver(true);
     setFinalResult({ winner: opponent, isDraw: false });
     registerResult(opponent, false, true);
+    if (gameType == "online") router.navigate("/");
   }
 
   function jumpTo(move: number) {
@@ -97,7 +121,7 @@ export function useTicTacToe(initialSize: number = 3, options?: UseTicTacToeOpti
     setGameOver(false);
     setFinalMove(null);
     setFinalResult(null);
-    startNewGame();
+    startNewGame(gameType);
   }
 
   return {
@@ -113,6 +137,8 @@ export function useTicTacToe(initialSize: number = 3, options?: UseTicTacToeOpti
     showStartModal,
     gameOver,
     finalMove,
+    gameType,
+    setGameType,
     handleClick,
     jumpTo,
     resetGame,

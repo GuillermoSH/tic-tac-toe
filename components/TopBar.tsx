@@ -1,6 +1,7 @@
 import { StatsPanel } from "@/components/StatsPanel";
 import { useTheme } from "@/contexts/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import { useState } from "react";
 import { Modal, Pressable, Text, TouchableOpacity, View } from "react-native";
 
@@ -120,6 +121,27 @@ export function TopBar({ winner, isDraw, currentPlayer }: TopBarProps) {
                 }`}
               >
                 Ver stats
+              </Text>
+            </TouchableOpacity>
+            {/* Volver al inicio */}
+            <TouchableOpacity
+              onPress={() => {
+                setMenuVisible(false);
+                router.navigate("/");
+              }}
+              className="px-5 py-3 flex-row items-center gap-3"
+            >
+              <Ionicons
+                name="home"
+                size={20}
+                color={isDark ? "#fff" : "000"}
+              />
+              <Text
+                className={`text-xl ${
+                  isDark ? "text-neutral-100" : "text-gray-800"
+                }`}
+              >
+                Volver al inicio
               </Text>
             </TouchableOpacity>
           </View>
