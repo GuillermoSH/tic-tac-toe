@@ -20,10 +20,10 @@ export default function Index() {
             Tic-Tac-Toe
           </Text>
         </View>
-        <Link className={`${btnStyle} ${localBtnColor}`} href={"/game?gameType=local"}>
+        <Link className={`${btnStyle} ${localBtnColor}`} href={"/game?gameType=local"} prefetch>
           <Text className="text-2xl text-center">Crear partida local</Text>
         </Link>
-        <Link className={`${btnStyle} ${onlineBtnColor}`} href={"/game?gameType=online"}>
+        <Link className={`${btnStyle} ${onlineBtnColor}`} href={"/game?gameType=online"} prefetch>
           <Text className="text-2xl text-center">Buscar partida online</Text>
         </Link>
         <View className="absolute bottom-4 w-full flex justify-center items-center">

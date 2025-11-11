@@ -3,7 +3,12 @@ import { useGameStats } from "@/hooks/useGameStats";
 import { Ionicons } from "@expo/vector-icons";
 import { Text, TouchableOpacity, View } from "react-native";
 
-export function StatsPanel() {
+type StatsPanelProps = {
+  winner: string | null;
+  isDraw: boolean;
+};
+
+export function StatsPanel({ winner, isDraw }: StatsPanelProps) {
   const { stats, resetStats } = useGameStats();
   const { themeType } = useTheme();
   const isDark = themeType === "dark";
@@ -105,17 +110,16 @@ export function StatsPanel() {
       </View>
 
       {/* Botón borrar */}
-      <TouchableOpacity
+      {(winner != null || isDraw) && (<TouchableOpacity
         onPress={resetStats}
-        className={`mt-2 py-3 rounded-xl flex-row justify-center items-center gap-2 active:scale-95 transition ${
-          isDark
+        className={`mt-2 py-3 rounded-xl flex-row justify-center items-center gap-2 active:scale-95 transition ${isDark
             ? "bg-red-600/80 border border-red-500"
             : "bg-red-500 border border-red-400"
-        }`}
+          }`}
       >
         <Ionicons name="trash-outline" size={18} color="#fff" />
         <Text className="text-white font-semibold">Borrar estadísticas</Text>
-      </TouchableOpacity>
+      </TouchableOpacity>)}
     </View>
   );
 }

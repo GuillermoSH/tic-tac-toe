@@ -158,7 +158,7 @@ export function TopBar({ winner, isDraw, currentPlayer }: TopBarProps) {
           onPress={() => setStatsVisible(false)}
         >
           <View className="w-[85%]">
-            <StatsPanel />
+            <StatsPanel winner={winner} isDraw={isDraw}/>
           </View>
         </Pressable>
       </Modal>
