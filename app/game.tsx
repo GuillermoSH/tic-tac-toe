@@ -7,14 +7,16 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { useGameStats } from "@/hooks/useGameStats";
 import { useTicTacToe } from "@/hooks/useTicTacToe";
 import { Ionicons } from "@expo/vector-icons";
+import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import "../global.css";
 
-export default function Index(gameType: string) {
+export default function Game() {
   const { addGame } = useGameStats();
+  const { gameType } = useLocalSearchParams();
 
   const {
     boardSize,
@@ -33,7 +35,7 @@ export default function Index(gameType: string) {
     jumpTo,
     resetGame,
     surrender,
-  } = useTicTacToe(3, { onGameEnd: addGame, selectedGameType: gameType });
+  } = useTicTacToe(3, { onGameEnd: addGame, selectedGameType: gameType as string });
 
   const { themeType } = useTheme();
   const isDark = themeType === "dark";

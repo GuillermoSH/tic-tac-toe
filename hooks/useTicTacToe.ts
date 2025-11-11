@@ -29,11 +29,11 @@ export function useTicTacToe(initialSize: number = 3, options?: UseTicTacToeOpti
   useEffect(() => {
     console.log(options?.selectedGameType);
     if (options?.selectedGameType) setGameType(options?.selectedGameType);
-    console.log(gameType);
-    startNewGame(gameType);
+    startNewGame(options?.selectedGameType ?? gameType);
   }, [boardSize]);
 
   const saveDeviceToApi = () => {
+    console.log("Realizando peticion al servidor...");
     return fetch('http://localhost:5000/devices', {
       method: 'POST',
       headers: {
