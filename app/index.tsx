@@ -28,7 +28,7 @@ export default function Index() {
         </Link>
         <View className="absolute bottom-4 w-full flex justify-center items-center">
           <Text className={`text-xl ${isDark ? "text-neutral-100" : "text-neutral-800"}`}>
-            With <FontAwesome name="heart" color="red" size={16}/> by <Text className="text-amber-400">GuillermoSH</Text>
+            With <FontAwesome name="heart" color="red" size={16}/> by <Text className={isDark ? "text-amber-400" : "text-amber-700"}>GuillermoSH</Text>
           </Text>
         </View>
       </View>
