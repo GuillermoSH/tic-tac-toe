@@ -1,4 +1,3 @@
-import { StatsPanel } from "@/components/StatsPanel";
 import { useTheme } from "@/contexts/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -9,13 +8,13 @@ type TopBarProps = {
   winner: string | null;
   isDraw: boolean;
   currentPlayer: "X" | "O";
+  onShowStats?: () => void;
 };
 
-export function TopBar({ winner, isDraw, currentPlayer }: TopBarProps) {
+export function TopBar({ winner, isDraw, currentPlayer, onShowStats }: TopBarProps) {
   const { themeType, toggleTheme } = useTheme();
   const isDark = themeType === "dark";
   const [menuVisible, setMenuVisible] = useState(false);
-  const [statsVisible, setStatsVisible] = useState(false);
   const router = useRouter();
 
   let iconName: keyof typeof Ionicons.glyphMap = "person-circle-outline";
@@ -107,7 +106,7 @@ export function TopBar({ winner, isDraw, currentPlayer }: TopBarProps) {
             <TouchableOpacity
               onPress={() => {
                 setMenuVisible(false);
-                setStatsVisible(true);
+                onShowStats?.();
               }}
               className="px-5 py-3 flex-row items-center gap-3"
             >
@@ -124,39 +123,6 @@ export function TopBar({ winner, isDraw, currentPlayer }: TopBarProps) {
                 Ver stats
               </Text>
             </TouchableOpacity>
-            {/* Volver al inicio */}
-            <TouchableOpacity
-              onPress={() => {
-                setMenuVisible(false);
-                setStatsVisible(false);
-                router.replace("/");
-              }}
-              className="px-5 py-3 flex-row items-center gap-3"
-            >
-              <Ionicons name="home" size={20} color={isDark ? "#fff" : "000"} />
-              <Text
-                className={`text-xl ${
-                  isDark ? "text-neutral-100" : "text-gray-800"
-                }`}
-              >
-                Volver al inicio
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </Pressable>
-      </Modal>
-      <Modal
-        transparent
-        animationType="slide"
-        visible={statsVisible}
-        onRequestClose={() => setStatsVisible(false)}
-      >
-        <Pressable
-          className="flex-1 bg-black/40 items-center justify-center"
-          onPress={() => setStatsVisible(false)}
-        >
-          <View className="w-[85%]">
-            <StatsPanel winner={winner} isDraw={isDraw} />
           </View>
         </Pressable>
       </Modal>

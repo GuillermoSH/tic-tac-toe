@@ -4,11 +4,6 @@ import React from "react";
 
 export default function RootLayout() {
   return (
-    <ThemeProvider>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" />
-        <Stack.Screen name="game" />
-      </Stack>
-    </ThemeProvider>
+    <ThemeProvider children={<Stack screenOptions={{ headerShown: false }} />} />
   );
 }

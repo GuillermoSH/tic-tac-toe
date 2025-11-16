@@ -19,7 +19,7 @@ export async function saveGame(result: GameResult) {
     games.push(result);
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(games));
   } catch (e) {
-    console.error("Error saving game:", e);
+    console.log("[ERROR] Error saving game:" + e);
   }
 }
 
@@ -28,7 +28,7 @@ export async function getAllGames(): Promise<GameResult[]> {
     const stored = await AsyncStorage.getItem(STORAGE_KEY);
     return stored ? JSON.parse(stored) : [];
   } catch (e) {
-    console.error("Error loading games:", e);
+    console.log("[ERROR] Error loading games:" + e);
     return [];
   }
 }

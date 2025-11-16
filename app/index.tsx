@@ -20,15 +20,15 @@ export default function Index() {
             Tic-Tac-Toe
           </Text>
         </View>
-        <Link className={`${btnStyle} ${localBtnColor}`} href={"/game?gameType=local"} prefetch>
+        <Link className={`${btnStyle} ${localBtnColor}`} href={"/gameLocal"} >
           <Text className="text-2xl text-center">Crear partida local</Text>
         </Link>
-        <Link className={`${btnStyle} ${onlineBtnColor}`} href={"/game?gameType=online"} prefetch>
+        <Link className={`${btnStyle} ${onlineBtnColor}`} href={"/gameOnline"} >
           <Text className="text-2xl text-center">Buscar partida online</Text>
         </Link>
         <View className="absolute bottom-4 w-full flex justify-center items-center">
-          <Text className={`text-xl ${isDark ? "text-neutral-100" : "text-neutral-800"}`}>
-            With <FontAwesome name="heart" color="red" size={16}/> by <Text className={isDark ? "text-amber-400" : "text-amber-700"}>GuillermoSH</Text>
+          <Text className={`text-base ${isDark ? "text-neutral-100" : "text-neutral-800"}`}>
+            With <FontAwesome name="heart" color="red" size={13}/> by <Text className={isDark ? "text-amber-400" : "text-amber-700"}>GuillermoSH</Text>
           </Text>
         </View>
       </View>

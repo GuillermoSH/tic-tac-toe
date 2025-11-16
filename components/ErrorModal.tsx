@@ -25,9 +25,21 @@ export function ErrorModal({ errorMessage, visible }: ErrorModalProps) {
           isDark ? "bg-neutral-800" : "bg-white"
         } items-center`}
       >
-        <Ionicons name="alert-circle-outline" size={64} className={isDark ? "!text-red-500" : "!text-red-600"} />
+        {errorMessage.includes("rendido") ? (
+          <Ionicons
+            name="flag-outline"
+            size={58}
+            color={isDark ? "#f59e0b" : "#d97706"}
+          />
+        ) : (
+          <Ionicons
+            name="alert-circle-outline"
+            size={58}
+            color={isDark ? "#ef4444" : "#dc2626"}
+          />
+        )}
         <Text
-          className={`text-xl font-semibold mb-2 ${
+          className={`text-2xl font-semibold my-2 ${
             isDark ? "text-neutral-100" : "text-gray-800"
           }`}
         >

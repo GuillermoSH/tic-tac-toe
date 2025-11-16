@@ -16,9 +16,9 @@ export function StartModal({ startingPlayer, visible }: StartModalProps) {
 
   const icon =
     startingPlayer === "X" ? (
-      <Ionicons name="close-outline" size={64} className={isDark ? "!text-indigo-500" : "!text-blue-500"} />
+      <Ionicons name="close-outline" size={64} color={isDark ? "#6366f1" : "#3b82f6"} />
     ) : (
-      <Ionicons name="ellipse-outline" size={64} className={isDark ? "!text-amber-500" : "!text-amber-500"} />
+      <Ionicons name="ellipse-outline" size={64} color={isDark ? "#fbbf24" : "#fbbf24"} />
     );
 
   return (

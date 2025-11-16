@@ -70,4 +70,9 @@ export const api = {
       body: JSON.stringify({ device_id }),
     });
   },
+
+  async getDeviceInfo(device_id: string) {
+    console.log(`GET /devices/${device_id}/info`);
+    return await fetchJSON(`${BASE_URL}/devices/${device_id}/info`);
+  },
 };
